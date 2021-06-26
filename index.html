@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Quick</title>
+    <style>
+        .box{
+            position: relative;
+            border-radius: 50% ;
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" >Start</button>
+    <div class="message"></div>
+    <div class="game-area"></div>
+    <script>
+        const button = document.querySelector('button');
+        const message = document.querySelector('.message');
+        const gameArea = document.querySelector('.game-area');
+        let inPlay =  false ; 
+        let playArea ={};
+        let start ;
+        messager('Click the Start Button');
+
+        function getColor(){
+            function color(){
+            const hex = randNum(255).toString(16);
+            return ('0' + String(hex)).substr(-2);
+        }return '#'+color()+color()+color();
+        }
+        function messager(str){
+            message.innerHTML = str ;
+        }
+        function randNum(num){
+            const randomVal = Math.floor(Math.random()*num);
+            return randomVal ;
+        }
+        function showBox(){
+            
+            playArea.timer = setTimeout(myBox,randNum(3000));
+
+        }
+        function myBox(){
+            const element = document.createElement('div');
+           element.setAttribute('class','box');
+           element.style.backgroundColor = getColor();
+           element.style.width = '100px';
+           element.style.height = '100px';
+           element.style.top = randNum(250) + 'px';
+           element.style.left = randNum(100) + 'px';
+           element.addEventListener('click',hit);
+           element.start = new Date().getTime();
+           gameArea.appendChild(element);
+        }
+        function hit(e){
+            const end = new Date().getTime();
+            const start = e.target.start ;
+            const duration = (end - start) / 1000 ;
+            messager('It took ' + duration.toFixed(2) + ' Second to Click');
+            clearTimeout(playArea.timer);
+            gameArea.children[0].remove();
+            playArea.timer = setTimeout(myBox,randNum(3000));
+        }
+
+        button.addEventListener('click',()=>{
+            inPlay = true ;
+            button.style.display = 'none';
+            messager('Click the Circle as Quickly as you Can');
+            showBox();
+        });
+    </script>
+</body>
+</html>
